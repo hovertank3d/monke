@@ -14,3 +14,9 @@ var (
 
 	MonkeHost = os.Getenv("MONKE_HOST")
 )
+
+func init() {
+	if MonkeHost == "" {
+		MonkeHost = "https://monke.oparysh.online"
+	}
+}
