@@ -11,6 +11,19 @@ query params:
 
 `/api/search?tags=<tags>&name=<name>`
 
+## ./cmd/cli
+
+simple command-line search and link generation utility.
+usage examples:
+```bash
+monke-cli search "jojo"
+monke-cli search --tags "-2025 -ongoing drama comedy"
+
+# pass links of episodes to mpv
+mpv $(monke-cli watch --name "one piece")
+mpv $(monke-cli watch --link kakeguruui s1e5:s2e2)
+```
+
 ## deploying
 
 TODO explain and add more info 
