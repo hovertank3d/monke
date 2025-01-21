@@ -11,4 +11,6 @@ var (
 	DBPass = os.Getenv("DB_PASS")
 	DBHost = os.Getenv("DB_HOST")
 	DSL    = fmt.Sprintf("postgres://%s:%s@%s/%s", DBUser, DBPass, DBHost, DBName)
+
+	MonkeHost = os.Getenv("MONKE_HOST")
 )
