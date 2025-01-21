@@ -11,6 +11,8 @@ query params:
 
 `/api/search?tags=<tags>&name=<name>`
 
+`/proxy/<anime_id>/<season>/<episode>`
+
 ## ./cmd/cli
 
 simple command-line search and link generation utility.
