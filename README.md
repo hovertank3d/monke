@@ -6,7 +6,7 @@ Simple [jut.su](https://jut.su) parser + API + proxy + cli client
 search animes by their tags and name
 
 query params:
- * `tags` -- list of space separated tags. minus prefixed are treated as now wanted;
+ * `tags` -- list of space separated tags. minus prefixed are treated as not wanted;
  * `name` -- original or translated anime name. 
 
 `/api/search?tags=<tags>&name=<name>`
