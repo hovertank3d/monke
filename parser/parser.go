@@ -121,7 +121,6 @@ func (p *Parser) VideoSource(a monke.Anime, season int, episode int) (src string
 	}
 
 	src = doc.Find("video > source").First().AttrOr("src", "")
-	fmt.Println("jajca", src)
 	return src, nil
 }
 

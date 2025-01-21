@@ -1,11 +1,14 @@
 package server
 
 import (
+	"bytes"
+	_ "embed"
 	"fmt"
 	"strconv"
 	"strings"
 
 	"github.com/hovertank3d/monke"
+	"github.com/hovertank3d/monke/env"
 	"github.com/hovertank3d/monke/parser"
 	"github.com/labstack/echo/v4"
 )
@@ -15,6 +18,9 @@ type Server struct {
 	db *monke.DB
 	p  *parser.Parser
 }
+
+//go:embed player.html
+var playerPage []byte
 
 func New(db *monke.DB) *Server {
 	s := &Server{
@@ -30,6 +36,12 @@ func New(db *monke.DB) *Server {
 
 	s.GET("/api/:id", s.apiAnime)
 	s.GET("/api/search", s.apiSearch)
+
+	if env.MonkePlayer {
+		s.GET("/", func(c echo.Context) error {
+			return c.Stream(200, "text/html", bytes.NewBuffer(playerPage))
+		})
+	}
 
 	return s
 }

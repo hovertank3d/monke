@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>monke player</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src='https://code.jquery.com/jquery-3.7.1.min.js'></script>
+</head>
+
+<body style="font-family: monospace;">
+    <h2>monke player</h2>
+    <div>
+        <label for="name">название:</label><input name="name" id="name" type="text" placeholder="jojo"><br>
+        <button onclick="findAnime()">поиск</button><br><br>
+
+        <select name="season" onchange="selectSeason(this.value)" id="season">  
+        </select>        
+        <select name="episode" onchange="selectEpisode(this.value)" id="episode">  
+        </select>
+    
+    </div>
+
+    <div>
+        <video width="50%" height="50%" controls=""></video><br>
+        <span>
+            <button id="prevbtn" onclick="prevEpisode()">предыдущая</button>
+            <button id="nextbtn" onclick="nextEpisode()">следующая</button>
+        </span>
+    </div>
+    <p id="abc"></p>
+
+    <script>
+        "use strict";
+
+        var anime = undefined;
+        var episode = 0;
+        var season = 0;
+
+        var vid = $("video")
+        var anime_name = $("#name")
+        var anime_tags = $("#tags")
+        vid.attr("src", "");
+        
+        function prevEpisode() {
+            var newEpisode = episode
+            var newSeason = season
+
+            if (episode == 1) {
+                newEpisode = anime.Seasons[season-2].Episodes
+                newSeason = season-1
+            } else {
+                newEpisode = episode-1
+            }
+            selectSeason(newSeason.toString())
+            selectEpisode(newEpisode.toString())
+            $("#season").val(newSeason)
+            $("#episode").val(newEpisode)
+        }
+
+        function nextEpisode() {
+            var newEpisode = episode
+            var newSeason = season
+
+            if (episode == anime.Seasons[season-1].Episodes) {
+                newEpisode = 1
+                newSeason = season+1
+            } else {
+                newEpisode = episode+1
+            }
+            selectSeason(newSeason.toString())
+            selectEpisode(newEpisode.toString())
+            $("#season").val(newSeason)
+            $("#episode").val(newEpisode)
+        }
+
+        function selectEpisode(sel) {
+            episode = parseInt(sel)
+
+            if (season == anime.Seasons.length && episode == anime.Seasons[season-1].Episodes) {
+                $("#nextbtn").prop("disabled",true);
+            } else {
+                $("#nextbtn").prop("disabled",false);
+            }
+
+            if (season == 1 && episode == 1) {
+                $("#prevbtn").prop("disabled",true);
+            } else {
+                $("#prevbtn").prop("disabled",false);
+            }
+
+            vid.attr("src", "/proxy/"+anime.ID+"/"+season.toString()+"/"+episode.toString())
+        }
+
+        function selectSeason(sel) {
+            season = parseInt(sel)
+
+            $("#episode").children().remove();
+            for (var i = 1; i <= anime.Seasons[season-1].Episodes; i++) {
+                $("#episode").append("<option>" + i.toString() + "</option>")
+            }
+
+            selectEpisode(1)
+        }
+
+        function findAnime() {
+            vid.attr("src", "");
+            $.ajax({
+                url: "/api/search?name=" + anime_name.val(),
+                success: function (result) {
+                    if (result.length < 1) {
+                        return
+                    }
+                    anime = result[0]
+                    season = 1;
+                    episode = 1;
+                    
+                    $("#season").children().remove();
+                    anime.Seasons.forEach(season => {
+                        var n = season.SeasonNum.toString();
+                        $("#season").append("<option>" + n + "</option>")
+                    });
+
+                    selectSeason(1)
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>

@@ -6,7 +6,7 @@ root = "/monke"
 tmp_dir = "/tmp"
 
 [build]
-cmd = "go build -o /tmp/monke ./cmd"
+cmd = "go build -buildvcs=false -o /tmp/monke ./cmd/server "
 bin = "/tmp/monke"
 include_ext = ["go", "tpl", "tmpl", "html"]
 exclude_dir = ["assets", "tmp", "vendor"]
